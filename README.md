@@ -2,7 +2,7 @@
 
 ALPHA RELEASE
 
-Dart port of the MCPI interface for Minecraft.
+Initial Dart port of the MCPI interface for Minecraft.
 
 IMPORTANT CHANGE THE IP IN main.dart TO MATCH YOUR SERVER !!!
 
