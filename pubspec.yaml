@@ -1,0 +1,7 @@
+name: mcpi-dart
+version: 0.0.1
+description: An initial Minecraft library for Dart.
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+dev_dependencies:
+  unittest: any
