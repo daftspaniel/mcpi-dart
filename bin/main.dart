@@ -19,7 +19,7 @@ main() async {
 
   await posDemo();
 
-  digMine();
+  digMine();//TODO : Convert from Python script.
 
   buildRainbow();
 }
