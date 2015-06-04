@@ -21,6 +21,11 @@ class Minecraft {
     }
   }
 
+  disconnect() async
+  {
+    await apiSocket.close();
+  }
+
   //Socket connect.
   handleConnect(Socket s) {
     apiSocket = s;

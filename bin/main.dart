@@ -22,6 +22,8 @@ main() async {
   digMine();//TODO : Convert from Python script.
 
   buildRainbow();
+
+  await mci.disconnect();
 }
 
 /// Send a message to chat.
