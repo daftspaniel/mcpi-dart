@@ -7,10 +7,9 @@ import 'dart:math' as math;
 Minecraft mci;
 
 main() async {
-
   // Connect to the server.
   mci = new Minecraft();
-  await mci.connect("192.168.0.110", 4711);
+  await mci.connect("192.168.0.106", 4711);
 
   // Run the demos.
   chatDemo();
@@ -19,7 +18,7 @@ main() async {
 
   await posDemo();
 
-  digMine();//TODO : Convert from Python script.
+  digMine(); //TODO : Convert from Python script.
 
   buildRainbow();
 
@@ -30,52 +29,48 @@ main() async {
 chatDemo() {
   print("Chat Demo Start");
   mci.chat("Dart is awesome!");
+  mci.chat("Minecraft is awesome!");
   print("Chat Demo End");
 }
 
 /// Build a wall of shiny blocks - x,y,z pos relative to player.
 blockDemo() {
-  print("Block Demo Start");
-  for (int i = 0; i < 99; i++) {
+  print("Block Demo : Start...");
+  for (int i = 0; i < 42; i++) {
     mci
-      ..setBlock(1, i, 0, Block.GOLD_BLOCK)
-      ..setBlock(3, i, 0, Block.DIAMOND_BLOCK)
-      ..setBlock(5, i, 0, Block.WOOL);
+      ..setBlock(11, i, 0, Block.GOLD_BLOCK)
+      ..setBlock(13, i, 0, Block.DIAMOND_BLOCK)
+      ..setBlock(15, i, 0, Block.WOOL)
+      ..setBlock(17, i, 0, Block.LEAVES);
   }
-  print("Block Demo End");
+  print("Block Demo : End.");
 }
 
 /// Retrieve position of the player.
 // TODO : Convert to int?
 posDemo() async {
-  print("Pos Demo Start");
+  print("Position Demo : Start...");
   var s = (await mci.getPos());
-  print(s);
-  print("Pos Demo End");
+  print("Player position $s");
+  print("Position : Demo End.");
 }
 
 /// Dig a staircase mine.
 void digMine() {}
 
+
+/// Build a rainbow out of wool.
 void buildRainbow() {
-  print("Starting rainbow...");
-  var colors = [
-    Block.BRICK_BLOCK,
-    Block.GOLD_BLOCK,
-    Block.MELON,
-    Block.DIAMOND_BLOCK,
-    Block.SANDSTONE,
-    Block.GLOWSTONE_BLOCK,
-    Block.LAPIS_LAZULI_BLOCK
-  ];
+  print("Starting rainbow construction...");
 
-  var height = 80;
-
+  List<int> woolColors = [14, 1, 4, 5, 3, 11, 10];
+  int height = 54;
+  double y;
   for (int x = 0; x < 128; x++) {
-    for (int ci = 0; ci < colors.length; ci++) {
-      double y = math.sin((x / 128.0) * math.PI) * height + ci;
-      mci.setBlock(x - 64, y.round(), 0, colors[(colors.length - 1) - ci]);
+    for (int ci = 0; ci < woolColors.length; ci++) {
+      y = math.sin((x / 128.0) * math.PI) * height + ci;
+      mci.setBlock(x - 24, y.round(), 0, Block.WOOL, ci);
     }
   }
-  print("Built rainbow.");
+  print("Built a rainbow!");
 }

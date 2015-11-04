@@ -1,7 +1,7 @@
-name: mcpi-dart
-version: 0.0.1
-description: An initial Minecraft library for Dart.
+name: mcpi_dart
+version: 0.0.2
+description: A Minecraft library for Dart.
+author: Davy Mitchell <daftspaniel@gmail.com>
+homepage: http://goo.gl/XA0U17
 environment:
   sdk: '>=1.0.0 <2.0.0'
-dev_dependencies:
-  unittest: any

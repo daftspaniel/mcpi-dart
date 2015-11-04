@@ -1,3 +1,7 @@
+# 4/11/15
+
+Package has been updated for pub and new features added.
+
 # 3/6/15 
 
 ALPHA RELEASE

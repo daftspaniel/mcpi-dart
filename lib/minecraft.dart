@@ -2,27 +2,22 @@ part of mcdart;
 
 /// Minecraft server class for API access.
 class Minecraft {
-
   String serverIP;
   Socket apiSocket;
 
-  Minecraft() {
-    print("constructor");
-  }
-
   /// Connect to the Minecraft server.
-  connect(String IP, int Port) async {
-    try{
-      Socket client = await Socket.connect(IP, Port);
+  connect(String ipAddress, int port) async {
+    try {
+      Socket client = await Socket.connect(ipAddress, port);
       apiSocket = client;
-      print("Connected");
+      print("Connected $ipAddress:$port");
     } catch (e) {
       print(e);
     }
   }
 
-  disconnect() async
-  {
+  /// Close the socket connection.
+  disconnect() async {
     await apiSocket.close();
   }
 
@@ -43,11 +38,9 @@ class Minecraft {
   }
 
   /// Send a command with no response.
-  _sendCmd(String cmd){
-    if (apiSocket != null)
-      apiSocket.write(cmd);
-    else
-      print("No socket.");
+  _sendCmd(String cmd) {
+    if (apiSocket != null) apiSocket.write(cmd);
+    else print("No socket.");
   }
 
   /// Send a msg to the chat room.
@@ -57,8 +50,12 @@ class Minecraft {
   }
 
   /// Set a block to a particular type.
-  setBlock(int x, int y, int z, int blockTypeID){
-    _sendCmd('world.setBlock($x,$y,$z,$blockTypeID)\n');
+  setBlock(int x, int y, int z, int blockTypeID, [int data = -1]) {
+    if (data < 0) {
+      _sendCmd('world.setBlock($x,$y,$z,$blockTypeID)\n');
+    } else {
+      _sendCmd('world.setBlock($x,$y,$z,$blockTypeID,$data)\n');
+    }
   }
 
   /// Handle returned data to the command.
@@ -69,11 +66,10 @@ class Minecraft {
   /// Return the player's position.
   Future<List> getPos() async {
     var fromByte = new StreamTransformer<List<int>, List<int>>.fromHandlers(
-          handleData: dh);
+        handleData: dh);
 
     var s;
-    if (apiSocket != null){
-
+    if (apiSocket != null) {
       apiSocket.write('player.getPos()\n');
 
       s = await apiSocket.transform(fromByte).first;
@@ -81,5 +77,4 @@ class Minecraft {
 
     return s;
   }
-
 }
