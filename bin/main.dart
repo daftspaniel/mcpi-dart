@@ -69,7 +69,7 @@ void buildRainbow() {
   for (int x = 0; x < 128; x++) {
     for (int ci = 0; ci < woolColors.length; ci++) {
       y = math.sin((x / 128.0) * math.PI) * height + ci;
-      mci.setBlock(x - 24, y.round(), 0, Block.WOOL, ci);
+      mci.setBlock(x - 24, y.round(), 0, Block.WOOL, woolColors[ci]);
     }
   }
   print("Built a rainbow!");
