@@ -9,7 +9,7 @@ Minecraft mci;
 main() async {
   // Connect to the server.
   mci = new Minecraft();
-  await mci.connect("192.168.0.106", 4711);
+  await mci.connect("192.168.0.111", 4711);
 
   // Run the demos.
   chatDemo();
@@ -18,7 +18,7 @@ main() async {
 
   await posDemo();
 
-  digMine(); //TODO : Convert from Python script.
+  await digMine();
 
   buildRainbow();
 
@@ -56,14 +56,42 @@ posDemo() async {
 }
 
 /// Dig a staircase mine.
-void digMine() {}
+digMine() async {
+  print('Diging a mine...');
+  List<int> pos = await mci.getPos();
+  int y = pos[1];
+  int x = pos[0];
+  int z = pos[2];
+  int i = 0;
+  while (y > -62) {
+    i += 1;
+    print('$x $y $z');
+    mci.setBlock(x, y, z + i, Block.AIR);
+    mci.setBlock(x, y, z + i + 1, Block.AIR);
+    mci.setBlock(x, y, z + i + 2, Block.AIR);
+    mci.setBlock(x, y, z + i + 3, Block.AIR);
 
+    mci.setBlock(x - 1, y, z + i, Block.AIR);
+    mci.setBlock(x - 1, y, z + i + 1, Block.AIR);
+    mci.setBlock(x - 1, y, z + i + 2, Block.AIR);
+    mci.setBlock(x - 1, y, z + i + 3, Block.AIR);
+
+    mci.setBlock(x, y - 1, z + i, Block.MOSS_STONE);
+    mci.setBlock(x - 1, y - 1, z + i, Block.MOSS_STONE);
+    if (y % 5 == 0) {
+      mci.setBlock(x - 2, y, z + i, Block.TORCH);
+      mci.setBlock(x + 2, y, z + i, Block.TORCH);
+    }
+    y -= 1;
+  }
+  print('Mine complete.');
+}
 
 /// Build a rainbow out of wool.
 void buildRainbow() {
   print("Starting rainbow construction...");
 
-  List<int> woolColors = [14, 1, 4, 5, 3, 11, 10];
+  List woolColors = [10, 11, 3, 5, 4, 1, 14];
   int height = 54;
   double y;
   for (int x = 0; x < 128; x++) {

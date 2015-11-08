@@ -4,11 +4,15 @@ part of mcdart;
 class Minecraft {
   String serverIP;
   Socket apiSocket;
+  String _ipAddress;
+  int _port;
 
   /// Connect to the Minecraft server.
   connect(String ipAddress, int port) async {
     try {
-      Socket client = await Socket.connect(ipAddress, port);
+      _ipAddress = ipAddress;
+      _port = port;
+      Socket client = await Socket.connect(_ipAddress, _port);
       apiSocket = client;
       print("Connected $ipAddress:$port");
     } catch (e) {
@@ -59,22 +63,35 @@ class Minecraft {
   }
 
   /// Handle returned data to the command.
-  dh(data, sink) {
+  dataHandler(data, sink) {
     sink.add(new String.fromCharCodes(data));
   }
 
-  /// Return the player's position.
+  /// Return the player's position as List<int>.
   Future<List> getPos() async {
-    var fromByte = new StreamTransformer<List<int>, List<int>>.fromHandlers(
-        handleData: dh);
 
-    var s;
+    // Workaround ;-)
+    await disconnect();
+    apiSocket = await Socket.connect(_ipAddress, _port);
+
+    StreamTransformer fromByte =
+        new StreamTransformer<List<int>, List<int>>.fromHandlers(
+            handleData: dataHandler);
+
+    List<int> XYZ = new List<int>();
     if (apiSocket != null) {
       apiSocket.write('player.getPos()\n');
-
-      s = await apiSocket.transform(fromByte).first;
     }
 
-    return s;
+    String s;
+    s = await apiSocket.transform(fromByte).first;
+    var lp = s.toString().split(',');
+
+    XYZ
+      ..add(double.parse(lp[0]).truncate())
+      ..add(double.parse(lp[1]).truncate())
+      ..add(double.parse(lp[2]).truncate());
+
+    return XYZ;
   }
 }
