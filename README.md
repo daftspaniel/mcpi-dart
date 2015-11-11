@@ -1,3 +1,9 @@
+# 11/11/15
+
+Improved GetPosition function.
+Blocks can now have data sent e.g. wool + color.
+Better demo and mine digging.
+
 # 4/11/15
 
 Package has been updated for pub and new features added.
