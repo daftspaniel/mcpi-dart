@@ -9,7 +9,7 @@ Minecraft mci;
 main() async {
   // Connect to the server.
   mci = new Minecraft();
-  await mci.connect("192.168.0.111", 4711);
+  await mci.connect("192.168.0.107", 4711);
 
   // Run the demos.
   chatDemo();
@@ -20,7 +20,7 @@ main() async {
 
   await digMine();
 
-  buildRainbow();
+  await buildRainbow();
 
   await mci.disconnect();
 }
@@ -47,7 +47,6 @@ blockDemo() {
 }
 
 /// Retrieve position of the player.
-// TODO : Convert to int?
 posDemo() async {
   print("Position Demo : Start...");
   var s = (await mci.getPos());
@@ -57,7 +56,7 @@ posDemo() async {
 
 /// Dig a staircase mine.
 digMine() async {
-  print('Diging a mine...');
+  print('Digging a mine...');
   List<int> pos = await mci.getPos();
   int y = pos[1];
   int x = pos[0];
@@ -88,16 +87,22 @@ digMine() async {
 }
 
 /// Build a rainbow out of wool.
-void buildRainbow() {
+buildRainbow() async {
   print("Starting rainbow construction...");
 
   List woolColors = [10, 11, 3, 5, 4, 1, 14];
   int height = 54;
   double y;
+
+  List<int> pos = await mci.getPos();
+  int playerZ = pos[2];
+  int playerX = pos[0];
+
   for (int x = 0; x < 128; x++) {
     for (int ci = 0; ci < woolColors.length; ci++) {
       y = math.sin((x / 128.0) * math.PI) * height + ci;
-      mci.setBlock(x - 24, y.round(), 0, Block.WOOL, woolColors[ci]);
+      mci.setBlock(
+          (playerX + x) - 24, y.round(), playerZ, Block.WOOL, woolColors[ci]);
     }
   }
   print("Built a rainbow!");

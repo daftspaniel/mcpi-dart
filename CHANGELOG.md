@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Rainbow demo now based around player position.
+
 ## 0.0.3
 
 - Added mine digging to demo.

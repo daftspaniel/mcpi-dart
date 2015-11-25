@@ -69,7 +69,6 @@ class Minecraft {
 
   /// Return the player's position as List<int>.
   Future<List> getPos() async {
-
     // Workaround ;-)
     await disconnect();
     apiSocket = await Socket.connect(_ipAddress, _port);
